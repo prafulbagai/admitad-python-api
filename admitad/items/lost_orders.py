@@ -72,7 +72,7 @@ class LostOrdersManager(Item):
     UPDATE_URL = Item.prepare_url('lost_orders/%(lost_order_id)s/update')
 
     CREATE_FIELDS = {
-        'campaign': lambda x: Item.sanitize_integer_value(x, 'campaign'),
+        'advcampaign': lambda x: Item.sanitize_integer_value(x, 'campaign'),
         'website': lambda x: Item.sanitize_integer_value(x, 'website'),
         'order_id': lambda x: Item.sanitize_string_value(x, 'order_id'),
         'order_date': lambda x: Item.sanitize_date(x, 'order_date'),
@@ -108,7 +108,7 @@ class LostOrdersManager(Item):
 
         """
         data = Item.sanitize_fields(self.CREATE_FIELDS, **kwargs)
-        files = [('attachment', open(item, 'rb')) for item in Item.sanitize_string_array(attachments, 'attachments')]
+        files = [('receipt', open(item, 'rb')) for item in Item.sanitize_string_array(attachments, 'attachments')]
 
         return self.transport.post().set_data(data).set_files(files).request(url=self.CREATE_URL)
 
